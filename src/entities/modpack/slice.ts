@@ -37,24 +37,24 @@ type ModpacksState = {
 }
 //
 // const generateModList = (mods: string[]): Mod[] =>
-// 	mods.map(mod => ({ id: uuidv4(), name: mod }))
+//   mods.map(mod => ({ id: uuidv4(), name: mod }))
 //
 // const generateModpack = (
-// 	name: string,
-// 	description: string,
-// 	mods: string[],
+//   name: string,
+//   description: string,
+//   mods: string[],
 // ): Modpack => {
-// 	const modlist = generateModList(mods)
-// 	return {
-// 		id: uuidv4(),
-// 		name,
-// 		description,
-// 		modlist: {
-// 			entities: Object.fromEntries(modlist.map(mod => [mod.id, mod])),
-// 			ids: modlist.map(mod => mod.id),
-// 			selectedModId: undefined,
-// 		},
-// 	}
+//   const modlist = generateModList(mods)
+//   return {
+//     id: uuidv4(),
+//     name,
+//     description,
+//     modlist: {
+//       entities: Object.fromEntries(modlist.map(mod => [mod.id, mod])),
+//       ids: modlist.map(mod => mod.id),
+//       selectedModId: undefined,
+//     },
+//   }
 // }
 
 export const initialModpacksData: InitialModpack[] = [
@@ -211,23 +211,29 @@ export const modpacksSlice = createSlice({
 		) => {
 			const { modpacks } = action.payload
 			state.entities = Object.fromEntries(
-				modpacks.map(modpack => [
-					modpack.id,
-					{
-						...modpack,
+				modpacks.map(modpack => {
+					const mods = modpack.modlist.map(name => ({
 						id: uuidv4(),
-						modlist: {
-							entities: Object.fromEntries(
-								modpack.modlist.map(mod => [mod.id, mod]),
-							),
-							ids: modpack.modlist.map(mod => mod.id),
-							selectedModId: undefined,
+						name,
+					}))
+					return [
+						modpack.id,
+						{
+							...modpack,
+							id: modpack.id,
+							modlist: {
+								entities: Object.fromEntries(
+									mods.map(mod => [mod.id, mod]),
+								),
+								ids: mods.map(mod => mod.id),
+								selectedModId: undefined,
+							},
 						},
-					},
-				]),
+					]
+				}),
 			)
 			state.ids = modpacks.map(modpack => modpack.id)
-			state.selectedModpackId = modpacks[0].id
+			state.selectedModpackId = modpacks[0]?.id
 		},
 		select: (state, action: PayloadAction<{ modpackId: ModpackId }>) => {
 			state.selectedModpackId = action.payload.modpackId
