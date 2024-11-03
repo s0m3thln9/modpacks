@@ -11,7 +11,7 @@ export function Slider() {
 
 	const ref = useRef<HTMLDivElement | null>(null)
 
-	const handleScroll = (offset: number) => () => {
+	const handleScroll = (offset: number) => {
 		if (ref.current) ref.current.scrollLeft += offset
 	}
 
@@ -24,7 +24,9 @@ export function Slider() {
 			<Button
 				variant='secondary'
 				className='mr-1'
-				onClick={() => handleScroll(-168)}
+				onClick={() => {
+					handleScroll(-168)
+				}}
 			>
 				<ArrowLeftIcon className='size-6' />
 			</Button>
@@ -48,7 +50,9 @@ export function Slider() {
 			<Button
 				variant='secondary'
 				className='ml-1'
-				onClick={() => handleScroll(+168)}
+				onClick={() => {
+					handleScroll(168)
+				}}
 			>
 				<ArrowRightIcon className='size-6' />
 			</Button>

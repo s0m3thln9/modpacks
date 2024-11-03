@@ -1,10 +1,10 @@
 import { MainProviders } from './providers'
-import { HomePage } from '../pages/home'
+import { AppRouter } from './routers'
 
 const App = () => {
 	return (
 		<MainProviders>
-			<HomePage />
+			<AppRouter />
 		</MainProviders>
 	)
 }

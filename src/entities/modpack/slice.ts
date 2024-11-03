@@ -35,27 +35,6 @@ type ModpacksState = {
 	ids: ModpackId[]
 	selectedModpackId?: ModpackId
 }
-//
-// const generateModList = (mods: string[]): Mod[] =>
-//   mods.map(mod => ({ id: uuidv4(), name: mod }))
-//
-// const generateModpack = (
-//   name: string,
-//   description: string,
-//   mods: string[],
-// ): Modpack => {
-//   const modlist = generateModList(mods)
-//   return {
-//     id: uuidv4(),
-//     name,
-//     description,
-//     modlist: {
-//       entities: Object.fromEntries(modlist.map(mod => [mod.id, mod])),
-//       ids: modlist.map(mod => mod.id),
-//       selectedModId: undefined,
-//     },
-//   }
-// }
 
 export const initialModpacksData: InitialModpack[] = [
 	{
@@ -237,6 +216,26 @@ export const modpacksSlice = createSlice({
 		},
 		select: (state, action: PayloadAction<{ modpackId: ModpackId }>) => {
 			state.selectedModpackId = action.payload.modpackId
+		},
+		add: (state, action: PayloadAction<{ modpack: InitialModpack }>) => {
+			const { modpack } = action.payload
+			const mods = modpack.modlist.map(name => ({
+				id: uuidv4(),
+				name,
+			}))
+			state.entities[modpack.id] = {
+				id: modpack.id,
+				name: modpack.name,
+				description: modpack.description,
+				modlist: {
+					entities: Object.fromEntries(
+						mods.map(mod => [mod.id, mod]),
+					),
+					ids: mods.map(mod => mod.id),
+					selectedModId: undefined,
+				},
+			}
+			state.ids.push(modpack.id)
 		},
 	},
 })

@@ -5,7 +5,7 @@ import { ModpackCard } from '../../widgets/home/modpack-card'
 export const HomePage = () => {
 	return (
 		<>
-			<Header />
+			<Header title='Modpacks' />
 			<main>
 				<Slider />
 				<ModpackCard />

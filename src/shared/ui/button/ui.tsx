@@ -6,6 +6,7 @@ type Props = {
 	variant: 'primary' | 'secondary'
 	className?: string
 	onClick?: () => void
+	type?: 'button' | 'submit'
 }
 
 const getButtonClass = (variant: Props['variant']) =>
@@ -18,6 +19,7 @@ export const Button: FC<Props> = ({
 	className,
 	variant,
 	onClick,
+	type = 'button',
 }) => {
 	return (
 		<button
@@ -27,6 +29,7 @@ export const Button: FC<Props> = ({
 				getButtonClass(variant),
 			)}
 			onClick={onClick}
+			type={type}
 		>
 			{children}
 		</button>
