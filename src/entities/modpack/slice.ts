@@ -237,5 +237,24 @@ export const modpacksSlice = createSlice({
 			}
 			state.ids.push(modpack.id)
 		},
+		edit: (state, action: PayloadAction<{ modpack: InitialModpack }>) => {
+			const { modpack } = action.payload
+			const mods = modpack.modlist.map(name => ({
+				id: uuidv4(),
+				name,
+			}))
+			state.entities[modpack.id] = {
+				id: modpack.id,
+				name: modpack.name,
+				description: modpack.description,
+				modlist: {
+					entities: Object.fromEntries(
+						mods.map(mod => [mod.id, mod]),
+					),
+					ids: mods.map(mod => mod.id),
+					selectedModId: undefined,
+				},
+			}
+		},
 	},
 })
